@@ -13,6 +13,30 @@ class AppScreen extends StatefulWidget {
 class AppScreenState extends State<AppScreen> {
   late int currentIndex;
 
+  final beamerDelegates = [
+    BeamerDelegate(
+      initialPath: '/books',
+      locationBuilder: RoutesLocationBuilder(
+        routes: {
+          '/books': (_, __, ___) => const BooksScreen(),
+          '/books/:bookId': (_, state, __) => BookDetailsScreen(
+                book: findBook(state.pathParameters['bookId']),
+              ),
+        },
+      ),
+    ),
+    BeamerDelegate(
+        initialPath: '/articles',
+        locationBuilder: RoutesLocationBuilder(
+          routes: {
+            '/articles': (_, __, ___) => const ArticlesScreen(),
+            '/articles/:articleId': (_, state, __) => ArticleDetailsScreen(
+                  article: findArticle(state.pathParameters['articleId']),
+                ),
+          },
+        )),
+  ];
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -46,27 +70,3 @@ class AppScreenState extends State<AppScreen> {
     );
   }
 }
-
-final beamerDelegates = [
-  BeamerDelegate(
-    initialPath: '/books',
-    locationBuilder: RoutesLocationBuilder(
-      routes: {
-        '/books': (_, __, ___) => const BooksScreen(),
-        '/books/:bookId': (_, state, __) => BookDetailsScreen(
-              book: findBook(state.pathParameters['bookId']),
-            ),
-      },
-    ),
-  ),
-  BeamerDelegate(
-      initialPath: '/articles',
-      locationBuilder: RoutesLocationBuilder(
-        routes: {
-          '/articles': (_, __, ___) => const ArticlesScreen(),
-          '/articles/:articleId': (_, state, __) => ArticleDetailsScreen(
-                article: findArticle(state.pathParameters['articleId']),
-              ),
-        },
-      )),
-];
